@@ -1,6 +1,7 @@
 name: Build
 
 on:
+  workflow_dispatch:    # <---- Add this to allow manual runs
   push:
     branches: ["*"]
   pull_request:
