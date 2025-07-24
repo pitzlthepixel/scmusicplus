@@ -1,7 +1,7 @@
 name: Build
 
 on:
-  workflow_dispatch:    # <---- Add this to allow manual runs
+  workflow_dispatch:        # <-- Added to enable manual runs
   push:
     branches: ["*"]
   pull_request:
@@ -39,7 +39,7 @@ jobs:
         run: THEOS=theos gmake clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
       - name: Upload a Build Artifact (rootless)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4    # <-- updated from v3 to v4
         with:
           name: packages iphoneos-arm64 (rootless)
           path: packages/*_iphoneos-arm64.deb
@@ -75,7 +75,7 @@ jobs:
         run: THEOS=theos gmake clean package FINALPACKAGE=1
 
       - name: Upload a Build Artifact (rootful)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4    # <-- updated from v3 to v4
         with:
           name: packages iphoneos-arm (rootful)
           path: packages/*_iphoneos-arm.deb
