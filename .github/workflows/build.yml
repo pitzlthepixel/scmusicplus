@@ -1,51 +1,15 @@
-name: Build
+name: Build Rootful Only
 
 on:
-  workflow_dispatch:        # <-- Added to enable manual runs
+  workflow_dispatch:
   push:
     branches: ["*"]
   pull_request:
     branches: ["*"]
 
 jobs:
-  build-rootless:
-    runs-on: macos-13
-    steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-
-      - uses: actions/checkout@v4
-
-      - name: Checkout theos/theos
-        uses: actions/checkout@v4
-        with:
-          repository: theos/theos
-          ref: master
-          submodules: recursive
-          path: theos
-
-      - name: Checkout SDKs
-        uses: actions/checkout@v4
-        with:
-          repository: xybp888/iOS-SDKs
-          ref: master
-          path: theos/sdks
-
-      - name: Install dependencies
-        run: brew install make xz ldid
-
-      - name: Build package (rootless)
-        run: THEOS=theos gmake clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
-
-      - name: Upload a Build Artifact (rootless)
-        uses: actions/upload-artifact@v4    # <-- updated from v3 to v4
-        with:
-          name: packages iphoneos-arm64 (rootless)
-          path: packages/*_iphoneos-arm64.deb
-
   build-rootful:
-    runs-on: macos-12
+    runs-on: macos-14
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -75,7 +39,7 @@ jobs:
         run: THEOS=theos gmake clean package FINALPACKAGE=1
 
       - name: Upload a Build Artifact (rootful)
-        uses: actions/upload-artifact@v4    # <-- updated from v3 to v4
+        uses: actions/upload-artifact@v4
         with:
           name: packages iphoneos-arm (rootful)
           path: packages/*_iphoneos-arm.deb
